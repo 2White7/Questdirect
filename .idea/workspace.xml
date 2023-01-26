@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="921c5c1e-0d2b-4c48-a592-4f836cc2c45b" name="Changes" comment="">
+    <list default="true" id="921c5c1e-0d2b-4c48-a592-4f836cc2c45b" name="Changes" comment="create all function for inteface">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/qdiary.db" beforeDir="false" afterPath="$PROJECT_DIR$/qdiary.db" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,6 +19,9 @@
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="ProjectErrors" />
   </component>
   <component name="ProjectId" id="2JrbBwTfN2cPIyKun0rGXAXVE8q" />
   <component name="ProjectViewState">
@@ -41,6 +45,25 @@
       <option name="presentableId" value="Default" />
       <updated>1672839017060</updated>
     </task>
+    <task id="LOCAL-00001" summary="create all function for inteface">
+      <created>1674758967828</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1674758967828</updated>
+    </task>
+    <task id="LOCAL-00002" summary="create all function for inteface">
+      <created>1674766742024</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1674766742024</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="create all function for inteface" />
+    <option name="LAST_COMMIT_MESSAGE" value="create all function for inteface" />
   </component>
 </project>

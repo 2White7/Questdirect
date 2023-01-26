@@ -1,6 +1,8 @@
 import sqlite3
 import datetime
 
+mainid = 0
+
 #блок создания таблиц
 with sqlite3.connect("qdiary.db") as db:
     cursor = db.cursor()
@@ -20,11 +22,12 @@ with sqlite3.connect("qdiary.db") as db:
         long TEXT,
         location TEXT,
         time TEXT,
-        status INTEGER
+        status VARCHAR(15)
     )
     """
 
     cursor.executescript(query)
+
 #функция регистрации пользователя, по задумке можно будет на разных акках чекать разные задачи
 def registration():
     name = input("Введите имя: ")
@@ -50,7 +53,14 @@ def registration():
 
 # вход в акк
 def account():
-    pass
+    global mainid
+    login = input("Введите логин: ")
+    cursor.execute("SELECT login FROM users WHERE login = ?", [login])
+    if cursor.fetchone() is None:
+        print("Такого логина не существует")
+    else:
+        [mainid], = cursor.execute("SELECT id FROM users WHERE login = ?", [login])
+        print(mainid)
 
 # функция создания задачи
 def createtask():
@@ -73,12 +83,18 @@ def createtask():
     h2 = int(input("Введите сколько часов планируется на дорогу: "))
     m2 = int(input("Введите сколько минут планируется на дорогу"))
     tt = datetime.time(h2, m2)
-    #st = 0 блок проверки на статус выполнения задачи быть ему не тут
+    st = "Не выполнено"
     #if st == 0:
         #st1 = "Не выполнено"
     #else:
         #st1 = "Выполнено"
-
+    #try:
+        #db = sqlite3.connect("qdiary.db")
+        #cursor = db.cursor()
+        #values = [ntask, dtask, date, long, l, tt, st]
+        #cursor.execute("""SELECT tasks( FROM tasks(ntask, dtask, date,
+        #long, location, time, status)
+        #WHERE VALUES(?, ?, ?, ?, ?, ?, ?)""",values)
 # функция выполнено/не выполнено
 def markdone():
     d1 = int(input("Введите айди задачи: "))
@@ -99,18 +115,21 @@ def inteface():
         registration()
     elif a == 2:
         account()
-    elif a == 3:
+    elif a == 3 and mainid !=0:
         createtask()
-    elif a == 4:
+    elif a == 4 and mainid !=0:
         markdone()
-    elif a == 5:
+    elif a == 5 and mainid !=0:
         done()
-    elif a == 6:
+    elif a == 6 and mainid !=0:
         notdone()
     elif a == 7:
         return a
     else:
-        print("Выберите действие из списка")
+        if a == 3 or a == 4 or a == 5 or a == 6:
+            print("Войдите в аккаунт или зарегестрируйтесь")
+        else:
+            print("Выберите действие из списка")
 
 def main():
     print("""Что вы хотите сделать?
@@ -121,8 +140,10 @@ def main():
                 5)Проверить выполненые задачи
                 6)Проврить не выполненые задачи
                 7)Выход""")
+
     end = 0
     while end != 7:
         end = inteface()
     else:
         return 0
+main()
