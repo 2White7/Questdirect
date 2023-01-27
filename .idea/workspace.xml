@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="921c5c1e-0d2b-4c48-a592-4f836cc2c45b" name="Changes" comment="create all function for inteface">
+    <list default="true" id="921c5c1e-0d2b-4c48-a592-4f836cc2c45b" name="Changes" comment="create account func">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/qdiary.db" beforeDir="false" afterPath="$PROJECT_DIR$/qdiary.db" afterDir="false" />
@@ -21,7 +21,7 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="ProjectErrors" />
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectId" id="2JrbBwTfN2cPIyKun0rGXAXVE8q" />
   <component name="ProjectViewState">
@@ -59,11 +59,19 @@
       <option name="project" value="LOCAL" />
       <updated>1674766742024</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="create account func">
+      <created>1674772489943</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1674772489943</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="create all function for inteface" />
-    <option name="LAST_COMMIT_MESSAGE" value="create all function for inteface" />
+    <MESSAGE value="create account func" />
+    <option name="LAST_COMMIT_MESSAGE" value="create account func" />
   </component>
 </project>

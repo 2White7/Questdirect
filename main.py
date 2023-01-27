@@ -60,10 +60,11 @@ def account():
         print("Такого логина не существует")
     else:
         [mainid], = cursor.execute("SELECT id FROM users WHERE login = ?", [login])
-        print(mainid)
+        print("Вход выполнен")
 
 # функция создания задачи
 def createtask():
+    global mainid
     ntask = str(input("Введите название задачи: "))
     dtask = str(input("Введите описание задачи: "))
     y = int(input("Введите год в котором планируется задача: "))
@@ -78,31 +79,48 @@ def createtask():
     m1 = int(input("Введите сколько минут вы планируете на задачу: "))
     #if m1 > 60: проверка на дебила 2(суть та же что и в 1 но с минутами)
         #print("Так нельзя, в одном часу 60 минут")
-    long = datetime.time(h1, m1)
+    long = datetime.datetime(y, mon, d, h1, m1)
     l = str(input("Введите где будет выполнятся задача: "))
     h2 = int(input("Введите сколько часов планируется на дорогу: "))
-    m2 = int(input("Введите сколько минут планируется на дорогу"))
-    tt = datetime.time(h2, m2)
+    m2 = int(input("Введите сколько минут планируется на дорогу: "))
+    tt = datetime.datetime(y, mon, d, h2, m2)
     st = "Не выполнено"
     #if st == 0:
         #st1 = "Не выполнено"
     #else:
         #st1 = "Выполнено"
-    #try:
-        #db = sqlite3.connect("qdiary.db")
-        #cursor = db.cursor()
-        #values = [ntask, dtask, date, long, l, tt, st]
-        #cursor.execute("""SELECT tasks( FROM tasks(ntask, dtask, date,
-        #long, location, time, status)
-        #WHERE VALUES(?, ?, ?, ?, ?, ?, ?)""",values)
+    try:
+        db = sqlite3.connect("qdiary.db")
+        cursor = db.cursor()
+        values = [mainid, ntask, dtask, date, long, l, tt, st]
+        cursor.execute("""INSERT INTO tasks(mainid, ntask, dtask, date,
+        long, location, time, status) VALUES(?, ?, ?, ?, ?, ?, ?, ?)""", values)
+        db.commit()
+        print("Задача создана успешно")
+    except sqlite3.Error as e:
+        print("Error", e)
+    finally:
+        cursor.close()
+        db.close()
+
 # функция выполнено/не выполнено
 def markdone():
+    global mainid
     d1 = int(input("Введите айди задачи: "))
     d2 = int(input("Введите статус задачи (1-выполнено, 2-не выполнено): "))
+    try:
+        db = sqlite3.connect("qdiary.db")
+        cursor = db.cursor()
+        cursor.execute("SELECT * FROM tasks WHERE mainid = ?", [mainid])
+        print(cursor.fetchall())
+        if cursor.fetchone() is None:
+            print("На вашем аккаунте нет задач")
+        else:
 
 # вывод выполненых задач
 def done():
-    pass
+    global mainid
+    print(mainid)
 
 # вывод не выполненых задач
 def notdone():
@@ -146,4 +164,7 @@ def main():
         end = inteface()
     else:
         return 0
-main()
+markdone()
+#cursor.execute("SELECT asistid FROM tasks WHERE mainid = ?", [mainid])
+#ai = cursor.fetchone()
+#print(ai)
