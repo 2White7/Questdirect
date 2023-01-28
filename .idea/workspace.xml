@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="921c5c1e-0d2b-4c48-a592-4f836cc2c45b" name="Changes" comment="create account func">
+    <list default="true" id="921c5c1e-0d2b-4c48-a592-4f836cc2c45b" name="Changes" comment="finished func createtask and start func markdone">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/qdiary.db" beforeDir="false" afterPath="$PROJECT_DIR$/qdiary.db" afterDir="false" />
@@ -66,12 +66,20 @@
       <option name="project" value="LOCAL" />
       <updated>1674772489943</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="finished func createtask and start func markdone">
+      <created>1674849445982</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1674849445982</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="create all function for inteface" />
     <MESSAGE value="create account func" />
-    <option name="LAST_COMMIT_MESSAGE" value="create account func" />
+    <MESSAGE value="finished func createtask and start func markdone" />
+    <option name="LAST_COMMIT_MESSAGE" value="finished func createtask and start func markdone" />
   </component>
 </project>

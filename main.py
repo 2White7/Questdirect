@@ -1,7 +1,7 @@
 import sqlite3
 import datetime
 
-mainid = 0
+mainid = 8
 
 #блок создания таблиц
 with sqlite3.connect("qdiary.db") as db:
@@ -18,10 +18,10 @@ with sqlite3.connect("qdiary.db") as db:
         asistid INTEGER PRIMARY KEY,
         ntask VARCHAR(40),
         dtask TEXT,
-        date TEXT,
-        long TEXT,
+        date DATETIME,
+        long TIME,
         location TEXT,
-        time TEXT,
+        time TIME,
         status VARCHAR(15)
     )
     """
@@ -85,10 +85,6 @@ def createtask():
     m2 = int(input("Введите сколько минут планируется на дорогу: "))
     tt = datetime.datetime(y, mon, d, h2, m2)
     st = "Не выполнено"
-    #if st == 0:
-        #st1 = "Не выполнено"
-    #else:
-        #st1 = "Выполнено"
     try:
         db = sqlite3.connect("qdiary.db")
         cursor = db.cursor()
@@ -106,25 +102,57 @@ def createtask():
 # функция выполнено/не выполнено
 def markdone():
     global mainid
-    d1 = int(input("Введите айди задачи: "))
-    d2 = int(input("Введите статус задачи (1-выполнено, 2-не выполнено): "))
     try:
         db = sqlite3.connect("qdiary.db")
         cursor = db.cursor()
         cursor.execute("SELECT * FROM tasks WHERE mainid = ?", [mainid])
         print(cursor.fetchall())
-        if cursor.fetchone() is None:
-            print("На вашем аккаунте нет задач")
+        d1 = int(input("Введите айди задачи: "))
+        d2 = int(input("Введите статус задачи (1-выполнено, 2-не выполнено): "))
+
+        if d2 == 1:
+            id = d1
+            cursor.execute("UPDATE tasks SET status = 'Выполнено' WHERE asistid = ?", [id])
+            db.commit()
+        elif d2 == 2:
+            id = d1
+            cursor.execute("UPDATE tasks SET status = 'Не выполнено' WHERE asistid = ?", [id])
+            db.commit()
         else:
+            print("Выберете 1 или 2")
+    except sqlite3.Error as e:
+        print("Error", e)
+    finally:
+        cursor.close()
+        db.close()
 
 # вывод выполненых задач
 def done():
     global mainid
-    print(mainid)
+    try:
+        db = sqlite3.connect("qdiary.db")
+        cursor = db.cursor()
+        cursor.execute("SELECT * FROM tasks WHERE mainid = ? AND status = ?", [mainid, 'Выполнено'])
+        print(cursor.fetchall())
+    except sqlite3.Error as e:
+        print("Error", e)
+    finally:
+        cursor.close()
+        db.close()
 
 # вывод не выполненых задач
 def notdone():
-    pass
+    global mainid
+    try:
+        db = sqlite3.connect("qdiary.db")
+        cursor = db.cursor()
+        cursor.execute("SELECT * FROM tasks WHERE mainid = ? AND status = ?", [mainid, 'Не выполнено'])
+        print(cursor.fetchall())
+    except sqlite3.Error as e:
+        print("Error", e)
+    finally:
+        cursor.close()
+        db.close()
 
 # функция интерфейса
 def inteface():
@@ -164,7 +192,17 @@ def main():
         end = inteface()
     else:
         return 0
-markdone()
-#cursor.execute("SELECT asistid FROM tasks WHERE mainid = ?", [mainid])
-#ai = cursor.fetchone()
-#print(ai)
+
+try:
+    db = sqlite3.connect("qdiary.db")
+    cursor = db.cursor()
+    cursor.execute("SELECT date FROM tasks WHERE mainid = ?",[mainid])
+    date1 = cursor.fetchone("SELECT SUBDATE")
+    date2 = datetime.datetime(2023, 1, 27, 18, 0, 0)
+    c = date1 - date2
+    print(c)
+except sqlite3.Error as e:
+    print("Error", e)
+finally:
+    cursor.close()
+    db.close()
