@@ -1,7 +1,7 @@
 import sqlite3
 import datetime
 
-mainid = 8
+mainid = 0
 
 #блок создания таблиц
 with sqlite3.connect("qdiary.db") as db:
@@ -108,7 +108,7 @@ def markdone():
         cursor.execute("SELECT * FROM tasks WHERE mainid = ?", [mainid])
         print(cursor.fetchall())
         d1 = int(input("Введите айди задачи: "))
-        d2 = int(input("Введите статус задачи (1-выполнено, 2-не выполнено): "))
+        d2 = int(input("Введите статус задачи (1-выполнено, 2-не выполнено, 3-вернутся): "))
 
         if d2 == 1:
             id = d1
@@ -118,8 +118,10 @@ def markdone():
             id = d1
             cursor.execute("UPDATE tasks SET status = 'Не выполнено' WHERE asistid = ?", [id])
             db.commit()
+        elif d2 == 3:
+            inteface()
         else:
-            print("Выберете 1 или 2")
+            print("Выберете 1, 2 или 3")
     except sqlite3.Error as e:
         print("Error", e)
     finally:
@@ -192,8 +194,11 @@ def main():
         end = inteface()
     else:
         return 0
-
-try:
+#main()
+cursor.execute("SELECT * FROM users")
+print(cursor.fetchall())
+"""try:
+    
     db = sqlite3.connect("qdiary.db")
     cursor = db.cursor()
     cursor.execute("SELECT date FROM tasks WHERE mainid = ?",[mainid])
@@ -205,4 +210,4 @@ except sqlite3.Error as e:
     print("Error", e)
 finally:
     cursor.close()
-    db.close()
+    db.close()"""

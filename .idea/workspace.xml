@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="921c5c1e-0d2b-4c48-a592-4f836cc2c45b" name="Changes" comment="finished func createtask and start func markdone">
+    <list default="true" id="921c5c1e-0d2b-4c48-a592-4f836cc2c45b" name="Changes" comment="finished all function, need end only chek time of diferent tasks">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/qdiary.db" beforeDir="false" afterPath="$PROJECT_DIR$/qdiary.db" afterDir="false" />
@@ -73,13 +73,21 @@
       <option name="project" value="LOCAL" />
       <updated>1674849445982</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="finished all function, need end only chek time of diferent tasks">
+      <created>1674942804530</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1674942804530</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="create all function for inteface" />
     <MESSAGE value="create account func" />
     <MESSAGE value="finished func createtask and start func markdone" />
-    <option name="LAST_COMMIT_MESSAGE" value="finished func createtask and start func markdone" />
+    <MESSAGE value="finished all function, need end only chek time of diferent tasks" />
+    <option name="LAST_COMMIT_MESSAGE" value="finished all function, need end only chek time of diferent tasks" />
   </component>
 </project>
