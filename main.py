@@ -1,5 +1,5 @@
 import sqlite3
-import datetime
+from datetime import datetime,timedelta
 
 mainid = 0
 
@@ -18,10 +18,9 @@ with sqlite3.connect("qdiary.db") as db:
         asistid INTEGER PRIMARY KEY,
         ntask VARCHAR(40),
         dtask TEXT,
-        date DATETIME,
-        long TIME,
+        date TEXT,
+        duration INTEGER,
         location TEXT,
-        time TIME,
         status VARCHAR(15)
     )
     """
@@ -63,6 +62,10 @@ def account():
         print("Вход выполнен")
 
 # функция создания задачи
+import sqlite3
+from datetime import datetime, timedelta
+
+
 def createtask():
     global mainid
     ntask = str(input("Введите название задачи: "))
@@ -72,25 +75,43 @@ def createtask():
     d = int(input("Введите день на который запланирована задача: "))
     h = int(input("Введите час на который запланирована задача: "))
     m = int(input("Введите минуты для указания точного времени: "))
-    date = datetime.datetime(y, mon, d, h, m)
+    date = datetime(y, mon, d, h, m)
     h1 = int(input("Введите сколько часов вы планируете на задачу: "))
-    #if h1 > 25: проверка на дебила 1(если ввести больше 24 дейттайм крашит нахер)
-        #print("К сожалению в сутках 24 часа")
+    if h1 >= 24:
+        print("К сожалению в сутках 24 часа")
+        return
     m1 = int(input("Введите сколько минут вы планируете на задачу: "))
-    #if m1 > 60: проверка на дебила 2(суть та же что и в 1 но с минутами)
-        #print("Так нельзя, в одном часу 60 минут")
-    long = datetime.datetime(y, mon, d, h1, m1)
+    if m1 >= 60:
+        print("Так нельзя, в одном часу 60 минут")
+        return
+    duration = timedelta(hours=h1, minutes=m1)
     l = str(input("Введите где будет выполнятся задача: "))
-    h2 = int(input("Введите сколько часов планируется на дорогу: "))
-    m2 = int(input("Введите сколько минут планируется на дорогу: "))
-    tt = datetime.datetime(y, mon, d, h2, m2)
+    h2 = int(input("Введите сколько часов вы планируете на дорогу: "))
+    m2 = int(input("Введите сколько минут вы планируете на дорогу: "))
+    tt = timedelta(hours=h2, minutes=m2)
     st = "Не выполнено"
+
+    end_time = date + duration + tt
+    date -= tt
+
     try:
         db = sqlite3.connect("qdiary.db")
         cursor = db.cursor()
-        values = [mainid, ntask, dtask, date, long, l, tt, st]
+        # проверка наложения задач друг на друга
+        overlapping_tasks = cursor.execute('''SELECT * FROM tasks
+                                             WHERE date + duration > ? AND date < ?''',
+                                           (date, end_time)).fetchall()
+        if overlapping_tasks:
+            print("Время задачи пересекается с другой задачей")
+            return
+        # проверка возможности выполнения задачи в течение текущего дня
+        if end_time.date() > date.date() or (end_time.date() == date.date() and end_time.time() > datetime.max.time()):
+            print('Новая задача не помещается в текущий день. Перенесите на следующий день')
+            return
+
+        values = [mainid, ntask, dtask, date, duration.total_seconds(), l, st]
         cursor.execute("""INSERT INTO tasks(mainid, ntask, dtask, date,
-        long, location, time, status) VALUES(?, ?, ?, ?, ?, ?, ?, ?)""", values)
+        duration, location, status) VALUES(?, ?, ?, ?, ?, ?, ?)""", values)
         db.commit()
         print("Задача создана успешно")
     except sqlite3.Error as e:
@@ -194,20 +215,4 @@ def main():
         end = inteface()
     else:
         return 0
-#main()
-cursor.execute("SELECT * FROM users")
-print(cursor.fetchall())
-"""try:
-    
-    db = sqlite3.connect("qdiary.db")
-    cursor = db.cursor()
-    cursor.execute("SELECT date FROM tasks WHERE mainid = ?",[mainid])
-    date1 = cursor.fetchone("SELECT SUBDATE")
-    date2 = datetime.datetime(2023, 1, 27, 18, 0, 0)
-    c = date1 - date2
-    print(c)
-except sqlite3.Error as e:
-    print("Error", e)
-finally:
-    cursor.close()
-    db.close()"""
+main()
