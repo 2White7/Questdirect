@@ -1,5 +1,5 @@
 import sqlite3
-from datetime import datetime,timedelta
+from datetime import datetime, timedelta
 
 mainid = 0
 
@@ -21,6 +21,7 @@ with sqlite3.connect("qdiary.db") as db:
         date TEXT,
         duration INTEGER,
         location TEXT,
+        traveltime INTEGER,
         status VARCHAR(15)
     )
     """
@@ -62,16 +63,12 @@ def account():
         print("Вход выполнен")
 
 # функция создания задачи
-import sqlite3
-from datetime import datetime, timedelta
-
-
 def createtask():
     global mainid
     ntask = str(input("Введите название задачи: "))
     dtask = str(input("Введите описание задачи: "))
     y = int(input("Введите год в котором планируется задача: "))
-    mon = int(input("Введите месяц в котором планируется задача(в цифрах): "))
+    mon = int(input("Введите месяц в котором планируется задача (в цифрах): "))
     d = int(input("Введите день на который запланирована задача: "))
     h = int(input("Введите час на который запланирована задача: "))
     m = int(input("Введите минуты для указания точного времени: "))
@@ -85,40 +82,61 @@ def createtask():
         print("Так нельзя, в одном часу 60 минут")
         return
     duration = timedelta(hours=h1, minutes=m1)
-    l = str(input("Введите где будет выполнятся задача: "))
+    l = str(input("Введите где будет выполняться задача: "))
     h2 = int(input("Введите сколько часов вы планируете на дорогу: "))
+    if h2 >= 24:
+        print("К сожалению в сутках 24 часа")
+        return
     m2 = int(input("Введите сколько минут вы планируете на дорогу: "))
-    tt = timedelta(hours=h2, minutes=m2)
+    if m2 >= 60:
+        print("Так нельзя, в одном часу 60 минут")
+        return
+    travel_time = timedelta(hours=h2, minutes=m2)
     st = "Не выполнено"
 
-    end_time = date + duration + tt
-    date -= tt
+    start_time = date - travel_time
+    end_time = date + duration
 
     try:
         db = sqlite3.connect("qdiary.db")
         cursor = db.cursor()
+
         # проверка наложения задач друг на друга
-        overlapping_tasks = cursor.execute('''SELECT * FROM tasks
-                                             WHERE date + duration > ? AND date < ?''',
-                                           (date, end_time)).fetchall()
+        overlapping_tasks = cursor.execute("""
+            SELECT * FROM tasks WHERE
+            (
+                (date BETWEEN ? AND ?) OR
+                (date + duration BETWEEN ? AND ?) OR
+                (? BETWEEN date AND date + duration) OR
+                (? BETWEEN date - traveltime AND date + duration + traveltime)
+            )
+            AND mainid = ? AND status = ?""",
+                                           (start_time, end_time, start_time, end_time, start_time, end_time, mainid,
+                                            st)).fetchone()
+
         if overlapping_tasks:
             print("Время задачи пересекается с другой задачей")
             return
+
         # проверка возможности выполнения задачи в течение текущего дня
-        if end_time.date() > date.date() or (end_time.date() == date.date() and end_time.time() > datetime.max.time()):
+        if start_time.date() != end_time.date() or end_time > datetime.max or start_time < datetime.now():
             print('Новая задача не помещается в текущий день. Перенесите на следующий день')
             return
 
-        values = [mainid, ntask, dtask, date, duration.total_seconds(), l, st]
+        duration_hours = duration.total_seconds() / 3600
+        travel_hours = travel_time.total_seconds() / 3600
+        date = str(date)
+        values = [mainid, ntask, dtask, date, duration_hours, travel_hours, l, st]
         cursor.execute("""INSERT INTO tasks(mainid, ntask, dtask, date,
-        duration, location, status) VALUES(?, ?, ?, ?, ?, ?, ?)""", values)
+            duration, traveltime, location, status) VALUES(?, ?, ?, ?, ?, ?, ?, ?)""", values)
         db.commit()
         print("Задача создана успешно")
     except sqlite3.Error as e:
-        print("Error", e)
+        print("Ошибка при выполнении операции в базе данных:", e)
     finally:
         cursor.close()
         db.close()
+
 
 # функция выполнено/не выполнено
 def markdone():
